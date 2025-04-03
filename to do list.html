@@ -2,7 +2,6 @@
 <html>
 <head>
     <style>
-        /* General Styles */
         * {
             margin: 0;
             padding: 0;
@@ -10,68 +9,52 @@
             font-family: 'Poppins', sans-serif;
         }
 
-        /* Body Styles */
         body {
-           
-    background-image: url("C:\Users\Paramita Das\Desktop\To do list\hide.jpg.jpg");
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: url('https://i.pinimg.com/736x/1d/7d/ed/1d7deddf9e46cd2494ad08d91dd7b35f.jpg') no-repeat center center fixed;
+            background-size: cover;
             height: 100vh;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Main Container */
         .container {
-            background-color: rgba(255, 255, 255, 0.95);
-            padding: 25px 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
             width: 400px;
             text-align: center;
-            backdrop-filter: blur(8px);
         }
 
-        /* Title */
         h1 {
-            margin-bottom: 15px;
             color: #333;
-            font-size: 28px;
-            font-weight: bold;
+            margin-bottom: 15px;
         }
 
-        /* Input Container */
         .input-container {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 15px;
         }
 
-        input, select {
-            flex: 1;
+        input, button {
             padding: 12px;
             border: 2px solid #ccc;
             border-radius: 8px;
-            margin-right: 10px;
-            outline: none;
-            transition: 0.3s;
+            font-size: 16px;
         }
 
-        input:focus, select:focus {
+        input:focus {
             border-color: #4caf50;
             box-shadow: 0 0 8px rgba(79, 172, 254, 0.5);
         }
 
         button {
-            padding: 12px 15px;
             background: linear-gradient(135deg, #4caf50, #00b894);
             color: white;
             border: none;
-            border-radius: 8px;
             cursor: pointer;
             transition: all 0.3s;
         }
@@ -81,15 +64,13 @@
             transform: scale(1.05);
         }
 
-        /* Task List */
         ul {
             list-style: none;
             padding: 0;
         }
 
-        /* Task Item */
         li {
-            background-color: #f9f9f9;
+            background: white;
             padding: 14px;
             border-radius: 8px;
             display: flex;
@@ -97,172 +78,119 @@
             align-items: center;
             margin-bottom: 10px;
             border: 1px solid #ddd;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
         }
 
         li:hover {
-            background-color: #f1f9ff;
+            background: #f1f9ff;
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
         }
 
-        /* Delete Button */
         .delete {
-            background-color: #ff4d4d;
-            border: none;
+            background: #ff4d4d;
+            color: white;
             padding: 5px 12px;
             border-radius: 8px;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            border: none;
+            transition: background 0.3s;
         }
 
         .delete:hover {
-            background-color: #ff3333;
-            transform: scale(1.1);
+            background: #ff3333;
         }
 
-        /* Calendar Styles */
-        .date-picker {
-            margin-bottom: 15px;
-        }
-
-        /* No Task Message */
         #emptyMessage {
             color: #888;
             margin-top: 20px;
         }
-
-        /* Responsive Design */
-        @media (max-width: 480px) {
-            .container {
-                width: 100%;
-                padding: 20px;
-            }
-
-            .input-container {
-                flex-direction: column;
-            }
-
-            input, button, select {
-                margin-bottom: 10px;
-                width: 100%;
-            }
-        }
     </style>
-    <title>Enhanced To-Do List</title>
+    <title>Beautiful To-Do List</title>
 </head>
 <body>
     <div class="container">
         <h1>🌟 My To-Do List</h1>
-
-        <!-- Task Input & Date Selection -->
         <div class="input-container">
             <input type="text" id="taskInput" placeholder="Add a new task...">
-            <input type="date" id="taskDate" class="date-picker">
+            <input type="date" id="taskDate">
+            <input type="time" id="taskTime">
             <button onclick="addTask()">Add</button>
         </div>
-
-        <!-- Task List -->
         <ul id="taskList"></ul>
         <p id="emptyMessage">No tasks yet. Add something to get started! 🎯</p>
     </div>
 
     <script>
-        // Load tasks when the page loads
         window.onload = loadTasks;
 
-        // Add task to the list
         function addTask() {
             var taskInput = document.getElementById("taskInput");
+            var taskDate = document.getElementById("taskDate");
+            var taskTime = document.getElementById("taskTime");
             var taskValue = taskInput.value.trim();
-            var taskDate = document.getElementById("taskDate").value;
+            var taskDueDate = taskDate.value;
+            var taskDueTime = taskTime.value;
 
             if (taskValue === "") {
                 alert("Please enter a task!");
-                taskInput.focus();
                 return;
             }
 
-            var formattedDate = formatDate(taskDate);
             var listItem = document.createElement("li");
             listItem.innerHTML = `
                 <span>
-                    <strong>${taskValue}</strong>
-                    <br>
-                    <small>📅 ${formattedDate}</small>
+                    <strong>${taskValue}</strong><br>
+                    <small>📅 ${taskDueDate || 'No date'} ⏰ ${taskDueTime || 'No time'}</small>
                 </span>
                 <button class="delete" onclick="deleteTask(this)">✕</button>
             `;
-
+            
             document.getElementById("taskList").appendChild(listItem);
-            saveTask(taskValue, formattedDate);
+            saveTask(taskValue, taskDueDate, taskDueTime);
 
             taskInput.value = "";
             taskDate.value = "";
-
+            taskTime.value = "";
             updateEmptyMessage();
         }
 
-        // Format date to a more readable format
-        function formatDate(dateString) {
-            if (!dateString) return "No due date";
-            var options = { day: "2-digit", month: "short", year: "numeric" };
-            return new Date(dateString).toLocaleDateString("en-GB", options);
+        function saveTask(task, date, time) {
+            var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            tasks.push({ task, date, time });
+            localStorage.setItem("tasks", JSON.stringify(tasks));
         }
 
-        // Delete task and update list
+        function loadTasks() {
+            var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            tasks.forEach(({ task, date, time }) => {
+                addTaskFromStorage(task, date, time);
+            });
+        }
+
+        function addTaskFromStorage(task, date, time) {
+            var listItem = document.createElement("li");
+            listItem.innerHTML = `
+                <span>
+                    <strong>${task}</strong><br>
+                    <small>📅 ${date || 'No date'} ⏰ ${time || 'No time'}</small>
+                </span>
+                <button class="delete" onclick="deleteTask(this)">✕</button>
+            `;
+            document.getElementById("taskList").appendChild(listItem);
+            updateEmptyMessage();
+        }
+
         function deleteTask(button) {
             var listItem = button.parentElement;
             listItem.remove();
-            deleteFromLocalStorage(listItem);
             updateEmptyMessage();
         }
 
-        // Update empty message visibility
         function updateEmptyMessage() {
             var taskList = document.getElementById("taskList");
             var emptyMessage = document.getElementById("emptyMessage");
-
-            if (taskList.children.length === 0) {
-                emptyMessage.style.display = "block";
-            } else {
-                emptyMessage.style.display = "none";
-            }
-        }
-
-        // Save task to local storage
-        function saveTask(task, date) {
-            var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            tasks.push({ task, date });
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-        }
-
-        // Load tasks from local storage
-        function loadTasks() {
-            var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            tasks.forEach(function (taskObj) {
-                var listItem = document.createElement("li");
-                listItem.innerHTML = `
-                    <span>
-                        <strong>${taskObj.task}</strong>
-                        <br>
-                        <small>📅 ${taskObj.date}</small>
-                    </span>
-                    <button class="delete" onclick="deleteTask(this)">✕</button>
-                `;
-                document.getElementById("taskList").appendChild(listItem);
-            });
-            updateEmptyMessage();
-        }
-
-        // Delete task from local storage
-        function deleteFromLocalStorage(listItem) {
-            var tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            var taskContent = listItem.querySelector("strong").innerText;
-            tasks = tasks.filter(function (taskObj) {
-                return taskObj.task !== taskContent;
-            });
-            localStorage.setItem("tasks", JSON.stringify(tasks));
+            emptyMessage.style.display = taskList.children.length === 0 ? "block" : "none";
         }
     </script>
 </body>
